@@ -36,7 +36,7 @@ const bodyParser = require('body-parser');
 // let Exercise = mongoose.model('Exercise', exererciseSchema);
 */
 
-const { User, Exercise, createNewUser, getAllUsers, addExercise } = require('./mongoose');
+const { User, Exercise, createNewUser, getAllUsers, addExercise, findExercise } = require('./mongoose');
 
 
 app.use(cors());
@@ -65,7 +65,6 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
   const { description, duration } = req.body;
   const date = req.body.date ? new Date(Date.parse(req.body.date)).toDateString() : new Date().toDateString(); 
 
-  // console.log(id, description, duration, date);
   const newExercise = new Exercise({
     description: description,
     duration: duration,
@@ -73,7 +72,10 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
     user: id,
   });
   const result = await addExercise(newExercise);
-  console.log(result);
+  console.log('*******result*****',result);
+  const { username } = result;
+  
+  res.json({username: username, _id: id, description: description, duration: duration, date: date});
 })  
 
 
