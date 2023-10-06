@@ -71,8 +71,12 @@ async function createNewUser(username) {
     return result;
   }
 
-  async function getUserExercises(userId) {
-    const result = await Exercise.find({ user: userId }).select({description: true, duration: true, date: true, _id: false});
+  async function getUserExercises(userId, from, to, limit) {
+    const result = await Exercise
+        .find({ user: userId, })
+        .select({description: true, duration: true, date: true, _id: false})
+        .limit(limit)
+
     return result;
   }
 

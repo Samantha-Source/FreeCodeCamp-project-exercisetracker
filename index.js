@@ -66,16 +66,27 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
   res.json({ _id: _id, username: username, date: currentExercise.date, duration: currentExercise.duration, description: currentExercise.description });
 })  
 
+// const date = req.body.date 
+// ? new Date(req.body.date.replace(/-/g, '\/')).toDateString()
+// : new Date().toDateString(); 
+
+
+
+
 app.get('/api/users/:_id/logs', async (req, res, next) => {
   const userId = req.params._id;
+  const from = new Date(req.query.from.replace(/-/g, '\/')).toDateString() || '1900/01/01';
+  const to = new Date(req.query.to.replace(/-/g, '\/')).toDateString() || '9999/12/31';
+  const limit = req.query.limit || 100
   const user = await findUser(userId);
   const { _id, username, log, __v } = user;
-  const exercises = await getUserExercises(_id);
-  console.log(exercises);
+  const exercises = await getUserExercises(_id, from, to, limit);
+  console.log(from, to, limit)
   
   res.json({ username: username, count: __v, _id: _id, log: exercises });
 })
 
+// http://localhost:3000/api/users/651f9cda5171487151b83763/logs?from=2023-01-01&to=2023-12-31
 
 
 
