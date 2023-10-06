@@ -49,9 +49,12 @@ app.route('/api/users')
 app.post('/api/users/:_id/exercises', async (req, res, next) => {
   const id = req.params._id;
   const { description, duration } = req.body;
-  const date = req.body.date 
-    ? new Date(req.body.date.replace(/-/g, '\/')).toDateString()
-    : new Date().toDateString(); 
+  // const date = req.body.date 
+  //   ? new Date(req.body.date.replace(/-/g, '\/')).toDateString()
+  //   : new Date().toDateString(); 
+  const date = req.body.date
+    ? new Date(req.body.date.replace(/-/g, '\/'))
+    : new Date();
 
   const newExercise = new Exercise({
     description: description,
@@ -63,7 +66,7 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
   const { _id, username, log } = result;
   const currentExercise = await findExercise(log[log.length - 1]);
 
-  res.json({ _id: _id, username: username, date: currentExercise.date, duration: currentExercise.duration, description: currentExercise.description });
+  res.json({ _id: _id, username: username, date: new Date(currentExercise.date).toDateString(), duration: currentExercise.duration, description: currentExercise.description });
 })  
 
 // const date = req.body.date 

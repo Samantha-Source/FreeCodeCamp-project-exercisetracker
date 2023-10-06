@@ -72,13 +72,11 @@ async function createNewUser(username) {
   }
 
   async function getUserExercises(userId, from, to, limit) {
+    console.log('from:', from, 'to:', to);
     const result = await Exercise
         .find({ 
             user: userId,
-            // date: {
-            //     $gte: from,
-            //     $lt: to,
-            // }
+            $where: date
              })
         .select({description: true, duration: true, date: true, _id: false})
         .limit(limit)
