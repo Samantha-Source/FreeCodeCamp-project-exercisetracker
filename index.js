@@ -50,10 +50,11 @@ app.get('/', (req, res) => {
 
 
 app.route('/api/users')
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     const { username } = req.body;
-    // console.log(username);
-    createNewUser(username);
+    const response = await createNewUser(username);
+    console.log(response);
+    res.json({ username: response.username, _id: response._id})
   })
 
 
