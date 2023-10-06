@@ -41,9 +41,13 @@ async function createNewUser(username) {
         return result;
     } catch (error) {
         console.error('Error creating user:', error);
-    }
+    };
+  };
 
-    
+  async function getAllUsers() {
+    const result = await User.find().select({username: true, _id: true})
+    // console.log(result);
+    return result;
   }
 
 
@@ -55,3 +59,4 @@ async function createNewUser(username) {
   exports.User = User;
   exports.Exercise = Exercise;
   exports.createNewUser = createNewUser;
+  exports.getAllUsers = getAllUsers;
