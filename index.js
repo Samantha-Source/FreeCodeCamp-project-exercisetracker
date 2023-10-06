@@ -84,6 +84,7 @@ app.get('/api/users/:_id/logs', async (req, res, next) => {
   const user = await findUser(userId);
   const { _id, username, log, __v } = user;
   const exercises = await getUserExercises(_id, from, to, limit);
+  // console.log()
   console.log(from, to, limit)
   
   res.json({ username: username, count: __v, _id: _id, log: exercises });
