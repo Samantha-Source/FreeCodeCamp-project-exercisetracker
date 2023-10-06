@@ -51,10 +51,11 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
     user: id,
   });
   const result = await addExercise(newExercise);
-  const userObject = await findUser(id);
+  const { _id, username, log } = result;
+  const currentExercise = await findExercise(log[log.length - 1]);
+  console.log(currentExercise);
 
-
-  res.json({ _id: userObject._id, username: userObject.username, date: date, duration: duration, description: description })
+  res.json({ _id: _id, username: username, date: currentExercise.date, duration: currentExercise.duration, description: currentExercise.description });
 
 })  
 
