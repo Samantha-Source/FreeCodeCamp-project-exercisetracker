@@ -46,8 +46,16 @@ async function createNewUser(username) {
 
   async function getAllUsers() {
     const result = await User.find().select({username: true, _id: true})
-    // console.log(result);
     return result;
+  }
+
+  async function addExercise(workout) {
+    try {
+        const result = await workout.save();
+        return result;
+    } catch (error) {
+        console.error('Error creating exercise:',error);
+    }
   }
 
 
@@ -60,3 +68,4 @@ async function createNewUser(username) {
   exports.Exercise = Exercise;
   exports.createNewUser = createNewUser;
   exports.getAllUsers = getAllUsers;
+  exports.addExercise = addExercise;
