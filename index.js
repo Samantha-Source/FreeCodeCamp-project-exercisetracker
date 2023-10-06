@@ -31,8 +31,12 @@ app.route('/api/users')
 app.post('/api/users/:_id/exercises', async (req, res, next) => {
   const id = req.params._id;
   const { description, duration } = req.body;
-
-  const date = req.body.date ? new Date(req.body.date).toUTCString() : new Date().toUTCString(); 
+  // console.log(new Date(req.body.date))
+  const date = req.body.date 
+    ? new Date(req.body.date.replace(/-/g, '\/')).toDateString()
+    : new Date().toDateString(); 
+  
+    console.log(date);
 
   const newExercise = new Exercise({
     description: description,
@@ -41,8 +45,9 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
     user: id,
   });
   const result = await addExercise(newExercise);
-  const { username, _id } = result;
-  
+  const { username } = result;
+
+  // res.json({ _id: id, username: username, date: date, duration: duration, description: description })
   res.json({username: username, _id: id, description: description, duration: duration, date: date });
 })  
 

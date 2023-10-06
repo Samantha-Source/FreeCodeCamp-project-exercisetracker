@@ -57,7 +57,6 @@ async function createNewUser(username) {
     try {
         const newWorkout = await workout.save();
         const matchingUser = await findUser(userId);
-        // console.log(matchingUser)
         matchingUser.log.push(newWorkout);
         const result = await matchingUser.save();
         return result;
