@@ -29,6 +29,22 @@ const exerciseSchema = new mongoose.Schema({
   let User = mongoose.model('User', userSchema);
   let Exercise = mongoose.model('Exercise', exerciseSchema);
 
+async function createNewUser(username) {
+    const newUser = new User({
+        username: username,
+        count: 0,
+        log: [],
+    });
+
+    try {
+        const result = await newUser.save();
+        return result;
+    } catch (error) {
+        console.error('Error creating user:', error);
+    }
+
+    
+  }
 
 
 
@@ -38,3 +54,4 @@ const exerciseSchema = new mongoose.Schema({
 
   exports.User = User;
   exports.Exercise = Exercise;
+  exports.createNewUser = createNewUser;
