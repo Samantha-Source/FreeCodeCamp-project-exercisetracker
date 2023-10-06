@@ -15,6 +15,15 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+app.get('/api/deleteall', async (req, res, next) => {
+  try {
+    const exercisesDeleted = await Exercise.deleteMany({});
+    const usersDeleted = await User.deleteMany({});
+    res.json({users: usersDeleted.deletedCount, exercises: exercisesDeleted.deletedCount});
+  } catch (err) {
+    console.error(err);
+  }
+})
 
 
 app.route('/api/users')
