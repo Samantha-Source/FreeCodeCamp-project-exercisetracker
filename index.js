@@ -3,38 +3,6 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config();
 const bodyParser = require('body-parser');
-/*
-// const mongoose = require('mongoose');
-// const mongoURI = process.env.MONGO_URI;
-// const { ObjectId } = require('mongodb');
-
-// mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true});
-
-// const exererciseSchema = new mongoose.Schema({
-//   description: String,
-//   duration: Number,
-//   date: String,
-//   user: {
-//     type: mongoose.Schema.ObjectId, 
-//     ref: 'User'
-//   }
-// })
-
-// const userSchema = new mongoose.Schema({
-//   username: {
-//     type: String,
-//     required: true
-//   },
-//   count: {
-//     type: Number,
-//     default: 0,
-//   },
-//   log: [{type: mongoose.Schema.ObjectId, ref: 'Exercise'}]
-// })
-
-// let User = mongoose.model('User', userSchema);
-// let Exercise = mongoose.model('Exercise', exererciseSchema);
-*/
 
 const { User, Exercise, createNewUser, getAllUsers, addExercise, findExercise } = require('./mongoose');
 
@@ -63,7 +31,8 @@ app.route('/api/users')
 app.post('/api/users/:_id/exercises', async (req, res, next) => {
   const id = req.params._id;
   const { description, duration } = req.body;
-  const date = req.body.date ? new Date(Date.parse(req.body.date)).toDateString() : new Date().toDateString(); 
+
+  const date = req.body.date ? new Date(req.body.date).toUTCString() : new Date().toUTCString(); 
 
   const newExercise = new Exercise({
     description: description,
@@ -72,10 +41,9 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
     user: id,
   });
   const result = await addExercise(newExercise);
-  console.log('*******result*****',result);
-  const { username } = result;
+  const { username, _id } = result;
   
-  res.json({username: username, _id: id, description: description, duration: duration, date: date});
+  res.json({username: username, _id: id, description: description, duration: duration, date: date });
 })  
 
 
