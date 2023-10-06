@@ -78,12 +78,19 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
 
 app.get('/api/users/:_id/logs', async (req, res, next) => {
   const userId = req.params._id;
-  const from = req.query.from ? new Date(req.query.from.replace(/-/g, '\/')).toDateString() : '1900/01/01';
-  const to = req.query.from ? new Date(req.query.to.replace(/-/g, '\/')).toDateString() : '9999/12/31';
+  // const from = req.query.from ? new Date(req.query.from.replace(/-/g, '\/')) : new Date('1900/01/01');
+  // const to = req.query.to ? new Date(req.query.to.replace(/-/g, '\/')) : new Date('9999/12/31');
+  const from = req.query.from ? new Date(req.query.from.replace(/-/g, '\/')) : new Date('1900/01/01');
+  const to = req.query.to ? new Date(req.query.to.replace(/-/g, '\/')) : new Date('9999/12/31');
   const limit = req.query.limit || 100
   const user = await findUser(userId);
   const { _id, username, log, __v } = user;
-  const exercisesData = await getUserExercises(_id, from, to, limit);
+  let exercisesData = await getUserExercises(_id, limit);
+  exercisesData = exercisesData.filter((exercise) => {
+    const date = new Date(exercise.date);
+    return date >= from && date <= to;
+  })
+  
   const exercises = exercisesData.map((exercise) => {
     return {
       description: exercise.description,
