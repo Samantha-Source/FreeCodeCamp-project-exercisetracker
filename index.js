@@ -83,9 +83,14 @@ app.get('/api/users/:_id/logs', async (req, res, next) => {
   const limit = req.query.limit || 100
   const user = await findUser(userId);
   const { _id, username, log, __v } = user;
-  const exercises = await getUserExercises(_id, from, to, limit);
-  // console.log()
-  console.log(from, to, limit)
+  const exercisesData = await getUserExercises(_id, from, to, limit);
+  const exercises = exercisesData.map((exercise) => {
+    return {
+      description: exercise.description,
+      duration: exercise.duration,
+      date: new Date(exercise.date).toDateString(),
+    }
+  })
   
   res.json({ username: username, count: __v, _id: _id, log: exercises });
 })
