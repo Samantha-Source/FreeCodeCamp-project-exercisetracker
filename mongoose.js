@@ -49,6 +49,7 @@ async function createNewUser(username) {
     return result;
   }
 
+
   // Jane Doe - 651f886d405abdc770902204
 
   async function addExercise(workout) {
@@ -81,3 +82,4 @@ async function createNewUser(username) {
   exports.getAllUsers = getAllUsers;
   exports.addExercise = addExercise;
   exports.findExercise = findExercise;
+  exports.findUser = findUser;

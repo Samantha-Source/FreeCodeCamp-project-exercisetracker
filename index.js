@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 
-const { User, Exercise, createNewUser, getAllUsers, addExercise, findExercise } = require('./mongoose');
+const { User, Exercise, createNewUser, getAllUsers, addExercise, findExercise, findUser } = require('./mongoose');
 
 
 app.use(cors());
@@ -42,10 +42,11 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
     user: id,
   });
   const result = await addExercise(newExercise);
-  const { username } = result;
+  const userObject = await findUser(id);
 
-  res.json({ _id: id, username: username, date: date, duration: duration, description: description })
-  // res.json({username: username, _id: id, description: description, duration: duration, date: date });
+
+  res.json({ _id: userObject._id, username: userObject.username, date: date, duration: duration, description: description })
+
 })  
 
 
