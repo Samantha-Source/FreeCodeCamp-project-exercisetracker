@@ -90,8 +90,15 @@ app.get('/api/users/:_id/logs', async (req, res, next) => {
     const date = new Date(exercise.date);
     return date >= from && date <= to;
   })
+
+  let limitedExercises = [];
+  for (let i = 0; i < exercisesData.length; i++) {
+    if (i < limit) {
+      limitedExercises.push(exercisesData[i]);
+    }
+  }
   
-  const exercises = exercisesData.map((exercise) => {
+  const exercises = limitedExercises.map((exercise) => {
     return {
       description: exercise.description,
       duration: exercise.duration,

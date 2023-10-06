@@ -75,8 +75,7 @@ async function createNewUser(username) {
     const result = await Exercise
         .find({ user: userId })
         .select({description: true, duration: true, date: true, _id: false})
-        .limit(limit)
-
+        .sort({ date: 1})
     return result;
   }
 
