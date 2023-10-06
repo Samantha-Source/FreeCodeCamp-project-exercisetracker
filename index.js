@@ -49,9 +49,6 @@ app.route('/api/users')
 app.post('/api/users/:_id/exercises', async (req, res, next) => {
   const id = req.params._id;
   const { description, duration } = req.body;
-  // const date = req.body.date 
-  //   ? new Date(req.body.date.replace(/-/g, '\/')).toDateString()
-  //   : new Date().toDateString(); 
   const date = req.body.date
     ? new Date(req.body.date.replace(/-/g, '\/'))
     : new Date();
@@ -69,22 +66,14 @@ app.post('/api/users/:_id/exercises', async (req, res, next) => {
   res.json({ _id: _id, username: username, date: new Date(currentExercise.date).toDateString(), duration: currentExercise.duration, description: currentExercise.description });
 })  
 
-// const date = req.body.date 
-// ? new Date(req.body.date.replace(/-/g, '\/')).toDateString()
-// : new Date().toDateString(); 
-
-
-
 
 app.get('/api/users/:_id/logs', async (req, res, next) => {
   const userId = req.params._id;
-  // const from = req.query.from ? new Date(req.query.from.replace(/-/g, '\/')) : new Date('1900/01/01');
-  // const to = req.query.to ? new Date(req.query.to.replace(/-/g, '\/')) : new Date('9999/12/31');
   const from = req.query.from ? new Date(req.query.from.replace(/-/g, '\/')) : new Date('1900/01/01');
   const to = req.query.to ? new Date(req.query.to.replace(/-/g, '\/')) : new Date('9999/12/31');
   const limit = req.query.limit || 100
   const user = await findUser(userId);
-  const { _id, username, log, __v } = user;
+  const { _id, username, __v } = user;
   let exercisesData = await getUserExercises(_id, limit);
   exercisesData = exercisesData.filter((exercise) => {
     const date = new Date(exercise.date);
@@ -108,9 +97,6 @@ app.get('/api/users/:_id/logs', async (req, res, next) => {
   
   res.json({ username: username, count: __v, _id: _id, log: exercises });
 })
-
-// http://localhost:3000/api/users/651f9cda5171487151b83763/logs?from=2023-01-01&to=2023-12-31
-
 
 
 const listener = app.listen(process.env.PORT || 3000, () => {

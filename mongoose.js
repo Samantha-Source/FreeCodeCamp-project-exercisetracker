@@ -12,7 +12,7 @@ const exerciseSchema = new mongoose.Schema({
       type: mongoose.Schema.ObjectId, 
       ref: 'User'
     }
-  })
+  });
   
   const userSchema = new mongoose.Schema({
     username: {
@@ -20,7 +20,7 @@ const exerciseSchema = new mongoose.Schema({
       required: true
     },
     log: [{type: mongoose.Schema.ObjectId, ref: 'Exercise'}]
-  })
+  });
 
   let User = mongoose.model('User', userSchema);
   let Exercise = mongoose.model('Exercise', exerciseSchema);
@@ -42,15 +42,13 @@ async function createNewUser(username) {
   async function getAllUsers() {
     const result = await User.find().select({username: true, _id: true})
     return result;
-  }
+  };
 
   async function findUser(id) {
     const result = await User.findById(id);
     return result;
-  }
+  };
 
-
-  // Jane Doe - 651f886d405abdc770902204
 
   async function addExercise(workout) {
     const userId = workout.user.toString();
@@ -62,22 +60,22 @@ async function createNewUser(username) {
         const result = await matchingUser.save();
         return result;
     } catch (error) {
-        console.error('Error creating exercise:',error);
-    }
-  }
+        console.error('Error creating exercise:', error);
+    };
+  };
 
   async function findExercise(id) {
     const result = await Exercise.findById(id).select({description: true, duration: true, date: true});
     return result;
-  }
+  };
 
-  async function getUserExercises(userId, limit) {
+  async function getUserExercises(userId) {
     const result = await Exercise
         .find({ user: userId })
         .select({description: true, duration: true, date: true, _id: false})
         .sort({ date: 1})
     return result;
-  }
+  };
 
 
 
